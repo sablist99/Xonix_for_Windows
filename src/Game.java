@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class Game extends JFrame {
@@ -52,13 +53,9 @@ public class Game extends JFrame {
     }
 
     private Game() {
-        //Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
-        //final int WIDTH = sSize.width;
-        //final int HEIGHT = sSize.height;
         String TITLE = "Xonix";
         setTitle(TITLE);
         setBounds(START_LOCATION, START_LOCATION, FIELD_WIDTH * POINT_SIZE + FIELD_DX, FIELD_HEIGHT * POINT_SIZE + FIELD_DY); //Параметры окна
-        //setAlwaysOnTop(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -239,7 +236,6 @@ public class Game extends JFrame {
             gameover.record();
             board.setText(String.format(FORMAT_STRING, field.getCountScore(), "Xn:", xonix.getCountLives(), "Full:", field.getCurrentPercent(), "Lvl:", xonix.getLevel()));
         }
-
     }
 
     class Xonix {
@@ -756,6 +752,11 @@ public class Game extends JFrame {
                     }
                     String name = null;
                     name = JOptionPane.showInputDialog(null, "Введите имя:", "Вы побили рекорд!", JOptionPane.INFORMATION_MESSAGE);
+                    name = name.replaceAll("[\\s]{2,}", " ");
+                    if(!Objects.equals(name, "") && (name.charAt(0) == ' ')) name = name.substring(1);
+                    int k = name.indexOf(" ");
+                    if (k != -1) name = name.substring(0, k + 1);
+                    if (Objects.equals(name, "") ) name = "Anonim";
                     data[i][0] = name;
                     data[i][1] = Integer.toString(xonix.getLevel());
                     data[i][2] = Integer.toString(field.getCountScore());
